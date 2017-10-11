@@ -16,7 +16,7 @@ import (
 	"github.com/graphql-go/handler"
 )
 
-func TestQuerySchema(t *testing.T) {
+func TestQuery(t *testing.T) {
 	// GIVEN
 	schema, err := graphql.NewSchema(testSchemata.RootSchema)
 	if err != nil {
@@ -42,7 +42,7 @@ func TestQuerySchema(t *testing.T) {
 	}
 }
 
-func Test1QuerySchemaThroughHandler(t *testing.T) {
+func TestQueryThroughHandler(t *testing.T) {
 	// GIVEN
 	schema, err := graphql.NewSchema(testSchemata.RootSchema)
 	if err != nil {

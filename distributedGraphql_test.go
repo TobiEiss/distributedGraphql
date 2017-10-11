@@ -81,3 +81,34 @@ func TestQueryThroughHandler(t *testing.T) {
 		t.Fail()
 	}
 }
+
+func TestQuerySchema(t *testing.T) {
+	// GIVEN
+	schema, err := graphql.NewSchema(testSchemata.RootSchema)
+	if err != nil {
+		t.Fail()
+	}
+	testServer := httptest.NewServer(handler.New(&handler.Config{Schema: &schema, Pretty: true}))
+	defer testServer.Close()
+
+	testQuery := testutil.IntrospectionQuery
+
+	// TEST
+	response, err := http.Post(testServer.URL, handler.ContentTypeGraphQL, strings.NewReader(testQuery))
+	if err != nil {
+		log.Println(err)
+		t.Fail()
+	}
+
+	defer response.Body.Close()
+	bytes, _ := ioutil.ReadAll(response.Body)
+	jsonParsed, _ := gabs.ParseJSON(bytes)
+
+	clipboard.WriteAll(string(jsonParsed.Path("data.__schema").Bytes()))
+
+	var mySchema distributedGraphql.Schema
+	if err := json.Unmarshal(jsonParsed.Path("data.__schema").Bytes(), &mySchema); err != nil {
+		log.Println(err)
+		t.Fail()
+	}
+}

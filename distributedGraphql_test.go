@@ -13,6 +13,7 @@ import (
 	"github.com/Jeffail/gabs"
 	"github.com/fino-digital/distributedGraphql/testSchemata"
 	"github.com/graphql-go/graphql"
+	"github.com/graphql-go/graphql/testutil"
 	"github.com/graphql-go/handler"
 )
 
@@ -103,8 +104,6 @@ func TestQuerySchema(t *testing.T) {
 	defer response.Body.Close()
 	bytes, _ := ioutil.ReadAll(response.Body)
 	jsonParsed, _ := gabs.ParseJSON(bytes)
-
-	clipboard.WriteAll(string(jsonParsed.Path("data.__schema").Bytes()))
 
 	var mySchema distributedGraphql.Schema
 	if err := json.Unmarshal(jsonParsed.Path("data.__schema").Bytes(), &mySchema); err != nil {

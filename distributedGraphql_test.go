@@ -11,6 +11,7 @@ import (
 	"testing"
 
 	"github.com/Jeffail/gabs"
+	"github.com/fino-digital/distributedGraphql"
 	"github.com/fino-digital/distributedGraphql/testSchemata"
 	"github.com/graphql-go/graphql"
 	"github.com/graphql-go/graphql/testutil"
